@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\source\\repos\\WpfApp1\\WpfApp1\\WpfApp1.csproj": {}
+    "D:\\Git\\TowerBloxxGame\\tower_bloxx\\WpfApp1\\WpfApp1\\WpfApp1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\source\\repos\\WpfApp1\\WpfApp1\\WpfApp1.csproj": {
+    "D:\\Git\\TowerBloxxGame\\tower_bloxx\\WpfApp1\\WpfApp1\\WpfApp1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\WpfApp1\\WpfApp1\\WpfApp1.csproj",
+        "projectUniqueName": "D:\\Git\\TowerBloxxGame\\tower_bloxx\\WpfApp1\\WpfApp1\\WpfApp1.csproj",
         "projectName": "WpfApp1",
-        "projectPath": "C:\\Users\\Admin\\source\\repos\\WpfApp1\\WpfApp1\\WpfApp1.csproj",
+        "projectPath": "D:\\Git\\TowerBloxxGame\\tower_bloxx\\WpfApp1\\WpfApp1\\WpfApp1.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\source\\repos\\WpfApp1\\WpfApp1\\obj\\",
+        "outputPath": "D:\\Git\\TowerBloxxGame\\tower_bloxx\\WpfApp1\\WpfApp1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
