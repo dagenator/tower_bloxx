@@ -137,15 +137,15 @@ namespace WpfApp1
         private Image CreateNewBlock(BlockPhysic block)
         {
             var image = new Image();
-            BitmapImage bi3 = new BitmapImage();
-            bi3.BeginInit();
-            bi3.UriSource = new Uri("HouseTest.bmp", UriKind.Relative);
-            bi3.EndInit();
-            image.Source = bi3;
-            image.Width = block.Size.X;
+            image = new Image();
+            image.Source = BitmapFrame.Create(new Uri(@"D:\Git\TowerBloxxGame\tower_bloxx\WpfApp1\WpfApp1\pictures\HouseTest.bmp"));
             image.Stretch = Stretch.Fill;
+            image.Width = 100;
+            image.Height = 50;
+
             Canvas.SetLeft(image, block.Position.X);
             Canvas.SetTop(image, block.Position.Y);
+            
             return image;
         }
 
@@ -153,7 +153,7 @@ namespace WpfApp1
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            CanvasField.Children.Insert(1, CreateNewBlock(block));
+            CanvasField.Children.Add( CreateNewBlock(block));
 
 
             ////FallAnimation1(block1);
