@@ -24,10 +24,16 @@ namespace WpfApp1
     /// 
     public partial class MainWindow : Window
     {
+        // 
         private BlockPhysic block = new BlockPhysic(200, 50, 150, 70);
-        private BlockPhysic block1 = new BlockPhysic(400, 50, 70, 70);
+        List<Tuple<Image, BlockPhysic>> Blocks = new List<Tuple<Image, BlockPhysic>>();
+        double TowerHeight = 700;
+        double DeleteBorder = 750;
+
 
         Image image = new Image();
+
+        double fallSpeed = 7;
 
 
 
@@ -38,14 +44,53 @@ namespace WpfApp1
         
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //rectangle = MakeRectangle(block.Position, block.Size, Brushes.Black);
-            
-            //CanvasField.Children.Insert(0, rectangle);
-
+            var timer = new DispatcherTimer();
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 18);
+            timer.Start();
 
         }
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            AnimationProcessing();
+        }
 
-        
+        private void BlockSpavn(BlockPhysic block)
+        {
+            Image im = CreateNewImage(block);
+            Blocks.Add( new Tuple<Image, BlockPhysic>(im, block));
+            CanvasField.Children.Add(im);
+        }
+
+        private void AnimationProcessing()
+        {
+            for(int i = 0; i < Blocks.Count; i++)
+            {
+                if (Blocks[i].Item2.Position.Y > DeleteBorder) DeleteBlock(i);
+
+                if (Blocks[i].Item2.State == State.Null
+                    || Blocks[i].Item2.State == State.InTower) continue;
+                else if(Blocks[i].Item2.State == State.Fall)
+                {
+                    if (Blocks[i].Item2.Position.Y+ Blocks[i].Item2.Size.Y >= TowerHeight)
+                    {
+                        Blocks[i].Item2.InTower();
+                        TowerHeight = Blocks[i].Item2.Position.Y;
+                    }
+                        
+
+                    StraightMoveAnimation(Blocks[i].Item2, Blocks[i].Item1, 0, fallSpeed);
+                }
+                
+
+            }
+        }
+
+        private void DeleteBlock(int index)
+        {
+            CanvasField.Children.Remove(Blocks[index].Item1);
+            Blocks.RemoveAt(index);
+        }
 
         private Rectangle MakeRectangle(Vector position, Vector size, Brush brush)
         {
@@ -61,7 +106,7 @@ namespace WpfApp1
        
        
 
-        private Image CreateNewBlock(BlockPhysic block)
+        private Image CreateNewImage(BlockPhysic block)
         {
             var image = new Image();
             image = new Image();
@@ -72,7 +117,6 @@ namespace WpfApp1
 
             Canvas.SetLeft(image, block.Position.X);
             Canvas.SetTop(image, block.Position.Y);
-            
             return image;
         }
 
@@ -80,15 +124,11 @@ namespace WpfApp1
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            image = CreateNewBlock(block);
-            CanvasField.Children.Add(image);
-
-            var timer = new DispatcherTimer();
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 20);
-            timer.Start();
+            BlockSpavn(new BlockPhysic(200, 50, 150, 75));
+            Blocks[Blocks.Count-1].Item2.StartFall();
 
         }
+       
 
         private void StraightMoveAnimation(BlockPhysic block, Image im, double stepX, double stepY)
         {
@@ -97,10 +137,6 @@ namespace WpfApp1
             block.SetNewPosition(block.Position.X + stepX, block.Position.Y + stepY);
         }
 
-        private void timer_Tick(object sender, EventArgs e)
-        {
-            StraightMoveAnimation(block, image, 0, 3);
-        }
-
+       
     }
 }
