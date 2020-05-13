@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using System.Timers;
+using System.Windows.Threading;
 
 namespace WpfApp1
 {
@@ -23,11 +24,11 @@ namespace WpfApp1
     /// 
     public partial class MainWindow : Window
     {
-        private BlockPhysic block = new BlockPhysic(200, 50, 70, 70);
+        private BlockPhysic block = new BlockPhysic(200, 50, 150, 70);
         private BlockPhysic block1 = new BlockPhysic(400, 50, 70, 70);
-        Rectangle rectangle = new Rectangle();
 
-         Storyboard ellipseStoryboard = new Storyboard();
+        Image image = new Image();
+
 
 
         public MainWindow()
@@ -37,25 +38,17 @@ namespace WpfApp1
         
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            rectangle = MakeRectangle(block.Position, block.Size, Brushes.Black);
+            //rectangle = MakeRectangle(block.Position, block.Size, Brushes.Black);
             
-            CanvasField.Children.Insert(0, rectangle);
+            //CanvasField.Children.Insert(0, rectangle);
 
-        }
 
-        private void TextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Space)
-            {
-                block.ChangeBlockStatement();
-            }
         }
 
         
 
         private Rectangle MakeRectangle(Vector position, Vector size, Brush brush)
         {
-            
             var rect = new Rectangle();
             rect.Width = size.X;
             rect.Height = size.Y;
@@ -65,83 +58,17 @@ namespace WpfApp1
             return rect;
         }
 
-        private RectAnimation FallAnimation1(BlockPhysic fallBolock)
-        {
-            var animation1 = new RectAnimation();
-            RectangleGeometry myRectangleGeometry = new RectangleGeometry();
-            myRectangleGeometry.Rect = new Rect(fallBolock.Position.X, fallBolock.Position.Y, fallBolock.Size.X, fallBolock.Size.Y);
-            animation1.To = new Rect(fallBolock.Position.X, fallBolock.Position.Y + 100, fallBolock.Size.X, fallBolock.Size.Y);
-            animation1.Duration = TimeSpan.FromSeconds(5);
-            Storyboard.SetTarget(animation1, rectangle);
-            Storyboard.SetTargetProperty(animation1, new PropertyPath(MarginProperty));
-
-            return animation1;
-        }
-
-        private void FallAnimation(BlockPhysic fallBolock)
-        {
-
-            // Create a NameScope for this page so that
-            // Storyboards can be used.
-            //NameScope.SetNameScope(this, new NameScope());
-            //NameScope.GetNameScope(this);
-
-            RectangleGeometry myRectangleGeometry = new RectangleGeometry();
-           
-            myRectangleGeometry.Rect = new Rect(fallBolock.Position.X, fallBolock.Position.Y, fallBolock.Size.X, fallBolock.Size.Y);
-
-            // Assign the geometry a name so that
-            // it can be targeted by a Storyboard.
-            this.RegisterName(
-                "MyAnimatedRectangleGeometry", myRectangleGeometry);
-
-            Path myPath = new Path();
-            myPath.Fill = Brushes.LemonChiffon;
-            myPath.StrokeThickness = 1;
-            myPath.Stroke = Brushes.Black;
-            myPath.Data = myRectangleGeometry;
-
-            RectAnimation myRectAnimation = new RectAnimation();
-            myRectAnimation.Duration = TimeSpan.FromSeconds(0.9);
-            myRectAnimation.FillBehavior = FillBehavior.HoldEnd;
-
-            // Set the animation to repeat forever.
-            //myRectAnimation.RepeatBehavior = RepeatBehavior.Forever;
-
-            // Set the From and To properties of the animation.
-            //myRectAnimation.From = new Rect(block1.Position.X, block1.Position.Y, block1.Size.X, block1.Size.Y);
-            myRectAnimation.To = new Rect(fallBolock.Position.X, fallBolock.Position.Y + 250, fallBolock.Size.X, fallBolock.Size.Y);
-
-            // Set the animation to target the Rect property
-            // of the object named "MyAnimatedRectangleGeometry."
-            Storyboard.SetTargetName(myRectAnimation, "MyAnimatedRectangleGeometry");
-            Storyboard.SetTargetProperty(
-                myRectAnimation, new PropertyPath(RectangleGeometry.RectProperty));
-
-            // Create a storyboard to apply the animation.
-           
-            ellipseStoryboard.Children.Add(myRectAnimation);
-
-            // Start the storyboard when the Path loads.
-            //myPath.Loaded += delegate (object sender, RoutedEventArgs e)
-            //{
-            //    ellipseStoryboard.Begin(this);
-            //};
-
-            //Canvas containerCanvas = new Canvas();
-            CanvasField.Children.Add(myPath);
-
-            //Content = CanvasField;
-        }
+       
+       
 
         private Image CreateNewBlock(BlockPhysic block)
         {
             var image = new Image();
             image = new Image();
-            image.Source = BitmapFrame.Create(new Uri(@"D:\Git\TowerBloxxGame\tower_bloxx\WpfApp1\WpfApp1\pictures\HouseTest.bmp"));
+            image.Source = BitmapFrame.Create(new Uri(@"D:\Git\TowerBloxxGame\tower_bloxx\WpfApp1\WpfApp1\pictures\HouseTest.bmp"));// орефакторить
             image.Stretch = Stretch.Fill;
-            image.Width = 100;
-            image.Height = 50;
+            image.Width = block.Size.X;
+            image.Height = block.Size.Y;
 
             Canvas.SetLeft(image, block.Position.X);
             Canvas.SetTop(image, block.Position.Y);
@@ -153,15 +80,27 @@ namespace WpfApp1
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            CanvasField.Children.Add( CreateNewBlock(block));
+            image = CreateNewBlock(block);
+            CanvasField.Children.Add(image);
 
-
-            ////FallAnimation1(block1);
-            //FallAnimation(block);
-            ////FallAnimation(block1);
-            //ellipseStoryboard.Begin(this);
-
+            var timer = new DispatcherTimer();
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 20);
+            timer.Start();
 
         }
+
+        private void StraightMoveAnimation(BlockPhysic block, Image im, double stepX, double stepY)
+        {
+            Canvas.SetTop(im, block.Position.Y);
+            Canvas.SetLeft(im, block.Position.X);
+            block.SetNewPosition(block.Position.X + stepX, block.Position.Y + stepY);
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            StraightMoveAnimation(block, image, 0, 3);
+        }
+
     }
 }

@@ -8,7 +8,6 @@
         Title="TowerBloXX" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
     <Canvas x:Name="CanvasField">
         <DockPanel >
-            <TextBox KeyDown="TextBox_KeyDown"  />
             <Button x:Name="button" Width="Auto"/>
         </DockPanel>
         <Button x:Name="Button1" Content="Button" Canvas.Left="545" Canvas.Top="10" Click="button1_Click"/>

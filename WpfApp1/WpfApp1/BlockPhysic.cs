@@ -25,7 +25,7 @@ namespace WpfApp1
         public bool isFalling { get; private set; }
 
         public event Action<Vector> BlockFalling;
-        public BlockPhysic(int posX, int posY, int sizeX, int sizeY)
+        public BlockPhysic(double posX, double posY, double sizeX, double sizeY)
         {
             Position = new Vector(posX, posY);
             Size = new Vector(sizeX, sizeY);
@@ -37,6 +37,11 @@ namespace WpfApp1
             MovingDown();
 
             //if (BlockFalling != null) BlockFalling(Size);
+        }
+
+        public void SetNewPosition(double newX, double newY)
+        {
+            Position = new Vector(newX, newY);
         }
 
         private void MovingDown()
