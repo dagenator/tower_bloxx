@@ -23,9 +23,17 @@ namespace WpfApp1
             X = inputX;
             Y = inputY;
         }
+        public void SetX(double x)
+        {
+            X = x;
+        }
+        public void SetY(double y)
+        {
+            Y = y;
+        }
     }
 
-    public class BlockPhysic
+    public  class BlockPhysic
     {
 
         // public const float gravity = 9.8f;
@@ -44,6 +52,12 @@ namespace WpfApp1
             Size = new Vector(sizeX, sizeY);
             State = State.Null;
         }
+        public BlockPhysic(double posX, double posY, double sizeX, double sizeY, State state)
+        {
+            Position = new Vector(posX, posY);
+            Size = new Vector(sizeX, sizeY);
+            State = state;
+        }
 
         //public void ChangeBlockStatement()
         //{
@@ -55,7 +69,8 @@ namespace WpfApp1
 
         public void StartFall()
         {
-            State = State.Fall;
+            if(State == State.Swing)
+                State = State.Fall;
         }
 
         public void Stop()

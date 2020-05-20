@@ -11,5 +11,6 @@
             <Button x:Name="button" Width="Auto"/>
         </DockPanel>
         <Button x:Name="Button1" Content="Button" Canvas.Left="545" Canvas.Top="10" Click="button1_Click"/>
+        <Label x:Name="label" Content="Label" Canvas.Left="674" Canvas.Top="312" Width="104"/>
     </Canvas>
 </Window>

@@ -27,16 +27,15 @@ namespace WpfApp1
         // 
         private BlockPhysic block = new BlockPhysic(200, 50, 150, 70);
         List<Tuple<Image, BlockPhysic>> Blocks = new List<Tuple<Image, BlockPhysic>>();
-        double TowerHeight = 700;
-        double DeleteBorder = 750;
+       
+        double DeleteBorder = 1000;
+        double fallSpeed = 5;
 
+        ParabollAnimations parabola = new ParabollAnimations( 200, 100, 300, 15, 5);
+        Image hook = new Image();
 
-        Image image = new Image();
-
-        double fallSpeed = 7;
-
-
-
+        DispatcherTimer SpavnTimer = new DispatcherTimer();
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -44,47 +43,58 @@ namespace WpfApp1
         
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var timer = new DispatcherTimer();
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 18);
-            timer.Start();
+            var AnimationTimer = new DispatcherTimer();
+            AnimationTimer.Tick += new EventHandler(AnimationTimer_Tick);
+            AnimationTimer.Interval = new TimeSpan(0, 0, 0, 0, 15);
+            AnimationTimer.Start();
 
+           
+            SpavnTimer.Tick += new EventHandler(SpavnTimer_Tick);
+            SpavnTimer.Interval = new TimeSpan(0, 0, 3);
+            SpavnTimer.Start();
+
+
+            hook = CreateNewImage(new BlockPhysic(parabola.DynamicPosition.X + parabola.Size.X/2, 
+                parabola.DynamicPosition.Y+ parabola.Size.Y, 
+                50, 
+                50),
+                BitmapFrame.Create(new Uri(@"D:\Git\TowerBloxxGame\tower_bloxx\WpfApp1\WpfApp1\pictures\23.png")));
+            CanvasField.Children.Add(hook);
+
+
+            BlockSpavn(new BlockPhysic(100, 650, 300, 100, State.InTower));
         }
-        private void timer_Tick(object sender, EventArgs e)
+
+        private void SpavnTimer_Tick(object sender, EventArgs e)
+        {
+            BlockSpavn(new BlockPhysic(parabola.DynamicPosition.X -50, parabola.DynamicPosition.Y +100, 150, 70, State.Swing));
+            SpavnTimer.IsEnabled = false;
+        }
+
+        private void AnimationTimer_Tick(object sender, EventArgs e)
         {
             AnimationProcessing();
+            HookAnimation();
+            //if (Blocks.Count >= 5)
+            //    label.Content = Blocks[4].Item2.Position.Y.ToString();
         }
 
         private void BlockSpavn(BlockPhysic block)
         {
-            Image im = CreateNewImage(block);
+            Image im = CreateNewImage(block, BitmapFrame.Create(new Uri(@"D:\Git\TowerBloxxGame\tower_bloxx\WpfApp1\WpfApp1\pictures\HouseTest.bmp")));
             Blocks.Add( new Tuple<Image, BlockPhysic>(im, block));
             CanvasField.Children.Add(im);
         }
 
-        private void AnimationProcessing()
+        private void HookAnimation()
         {
-            for(int i = 0; i < Blocks.Count; i++)
-            {
-                if (Blocks[i].Item2.Position.Y > DeleteBorder) DeleteBlock(i);
-
-                if (Blocks[i].Item2.State == State.Null
-                    || Blocks[i].Item2.State == State.InTower) continue;
-                else if(Blocks[i].Item2.State == State.Fall)
-                {
-                    if (Blocks[i].Item2.Position.Y+ Blocks[i].Item2.Size.Y >= TowerHeight)
-                    {
-                        Blocks[i].Item2.InTower();
-                        TowerHeight = Blocks[i].Item2.Position.Y;
-                    }
-                        
-
-                    StraightMoveAnimation(Blocks[i].Item2, Blocks[i].Item1, 0, fallSpeed);
-                }
-                
-
-            }
+            Canvas.SetLeft(hook, parabola.DynamicPosition.X);
+            Canvas.SetTop(hook, parabola.DynamicPosition.Y);
+            parabola.MadeStep();
         }
+
+        
+       
 
         private void DeleteBlock(int index)
         {
@@ -103,14 +113,12 @@ namespace WpfApp1
             return rect;
         }
 
-       
-       
 
-        private Image CreateNewImage(BlockPhysic block)
+        private Image CreateNewImage(BlockPhysic block, BitmapFrame bitmape)
         {
             var image = new Image();
             image = new Image();
-            image.Source = BitmapFrame.Create(new Uri(@"D:\Git\TowerBloxxGame\tower_bloxx\WpfApp1\WpfApp1\pictures\HouseTest.bmp"));// орефакторить
+            image.Source = bitmape;// BitmapFrame.Create(new Uri(@"D:\Git\TowerBloxxGame\tower_bloxx\WpfApp1\WpfApp1\pictures\HouseTest.bmp"));// орефакторить
             image.Stretch = Stretch.Fill;
             image.Width = block.Size.X;
             image.Height = block.Size.Y;
@@ -120,15 +128,13 @@ namespace WpfApp1
             return image;
         }
 
-
-
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void SwingMoveAnimation(BlockPhysic block, Image im)
         {
-            BlockSpavn(new BlockPhysic(200, 50, 150, 75));
-            Blocks[Blocks.Count-1].Item2.StartFall();
-
+            block.SetNewPosition(parabola.DynamicPosition.X -block.Size.X/2+ hook.Width/2, parabola.DynamicPosition.Y +block.Size.Y/2);
+            Canvas.SetTop(im, block.Position.Y);
+            Canvas.SetLeft(im, block.Position.X);
+            
         }
-       
 
         private void StraightMoveAnimation(BlockPhysic block, Image im, double stepX, double stepY)
         {
@@ -137,6 +143,13 @@ namespace WpfApp1
             block.SetNewPosition(block.Position.X + stepX, block.Position.Y + stepY);
         }
 
-       
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            
+            Blocks[Blocks.Count - 1].Item2.StartFall();
+            SpavnTimer.IsEnabled = true;
+
+
+        }
     }
 }

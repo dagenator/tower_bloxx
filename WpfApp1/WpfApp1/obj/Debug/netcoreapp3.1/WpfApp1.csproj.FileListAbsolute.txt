@@ -32,3 +32,4 @@ D:\Git\TowerBloxxGame\tower_bloxx\WpfApp1\WpfApp1\obj\Debug\netcoreapp3.1\WpfApp
 D:\Git\TowerBloxxGame\tower_bloxx\WpfApp1\WpfApp1\obj\Debug\netcoreapp3.1\WpfApp1.AssemblyInfo.cs
 D:\Git\TowerBloxxGame\tower_bloxx\WpfApp1\WpfApp1\obj\Debug\netcoreapp3.1\WpfApp1.dll
 D:\Git\TowerBloxxGame\tower_bloxx\WpfApp1\WpfApp1\obj\Debug\netcoreapp3.1\WpfApp1.pdb
+D:\Git\TowerBloxxGame\tower_bloxx\WpfApp1\WpfApp1\obj\Debug\netcoreapp3.1\WpfApp1.genruntimeconfig.cache
