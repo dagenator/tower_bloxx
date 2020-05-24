@@ -8,7 +8,7 @@ namespace WpfApp1
     {
         public bool CollisionDetect(BlockPhysic b1, BlockPhysic b2)
         {
-            double err = 1;
+            double err = -1;
             return (b1.Position.X <= b2.Position.X + b2.Size.X + err
                 && b1.Position.X + b1.Size.X + err >= b2.Position.X
                 && b1.Position.Y <= b2.Position.Y + b2.Size.Y + err

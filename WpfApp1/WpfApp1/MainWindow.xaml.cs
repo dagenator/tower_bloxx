@@ -45,10 +45,12 @@ namespace WpfApp1
             CanvasField.Children.Add(im);
         }
 
+
         public void DeleteBlock(Image im)
         {
             CanvasField.Children.Remove(im);
         }
+
 
         private void CanvasField_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

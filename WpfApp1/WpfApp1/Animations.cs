@@ -70,11 +70,11 @@ namespace WpfApp1
 
         private CalculateOfCollision calculator = new CalculateOfCollision();
 
-        public ParabollAnimations parabola = new ParabollAnimations(200, 100, 300, 15, 3);
+        public ParabollAnimations parabola = new ParabollAnimations(225, 80, 400, 23, 4);// k -коэффицент деления по y, Чем больше тем меньше прарабола по высоте
 
         private MainWindow window;
 
-        private double fallSpeed = 5;
+        private double fallSpeed = 8;
         private double DeleteBorder = 1000;
         private bool GoingDown = false;
         private double goingDownDistance = 10;
@@ -91,7 +91,8 @@ namespace WpfApp1
 
             for (int i = 0; i < Blocks.Count; i++)
             {
-                //if(Blocks[i].Item2.Position.Y > )////
+                if (Blocks[i].Item2.State == State.Fall && Blocks[i].Item2.Position.Y > Blocks[i - 1].Item2.Position.Y && Blocks.Count > 3)
+                    logic.GameOver();
                 if (Blocks[i].Item2.Position.Y > DeleteBorder) logic.DeleteBlock(i);
 
                 if (Blocks[i].Item2.State == State.InTower && GoingDown)
@@ -103,8 +104,9 @@ namespace WpfApp1
                     if (calculator.CollisionDetect(Blocks[i].Item2, Blocks[i - 1].Item2))
                     {
                         Blocks[i].Item2.InTower();
-                        GoingDown = true;
-                        //window.label.Content = GoingDown + " " + goingDownDistance;// calculator.GetProcentOfTouching(Blocks[i].Item2, Blocks[i - 1].Item2);
+                        if(Blocks.Count > 5)
+                            GoingDown = true;
+                        logic.ScoreCount(calculator.GetProcentOfTouching(Blocks[i].Item2, Blocks[i - 1].Item2));
                     }
                     else
                         StraightMoveAnimation(Blocks[i].Item2, Blocks[i].Item1, 0, fallSpeed);
