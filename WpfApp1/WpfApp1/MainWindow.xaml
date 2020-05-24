@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="TowerBloXX" Height="749" Width="904" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
-    <Canvas x:Name="CanvasField">
+        Title="TowerBloXX" Height="800" Width="450" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <Canvas x:Name="CanvasField" KeyUp="Canvas_KeyUp" >
         <DockPanel >
             <Button x:Name="button" Width="Auto"/>
         </DockPanel>
-        <Button x:Name="Button1" Content="Button" Canvas.Left="545" Canvas.Top="10" Click="button1_Click"/>
+        <Button x:Name="Button1" Content="Button" Canvas.Left="371" Canvas.Top="33" Click="button1_Click"/>
         <Label x:Name="label" Content="Label" Canvas.Left="674" Canvas.Top="312" Width="104"/>
     </Canvas>
 </Window>

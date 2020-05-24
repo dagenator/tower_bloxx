@@ -45,7 +45,7 @@ namespace WpfApp1
       
 
 
-        public event Action<Vector> BlockFalling;
+        //public event Action<Vector> BlockFalling;
         public BlockPhysic(double posX, double posY, double sizeX, double sizeY)
         {
             Position = new Vector(posX, posY);
