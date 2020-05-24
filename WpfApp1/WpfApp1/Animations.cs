@@ -104,7 +104,7 @@ namespace WpfApp1
                     {
                         Blocks[i].Item2.InTower();
                         GoingDown = true;
-                        window.label.Content = GoingDown + " " + goingDownDistance;// calculator.GetProcentOfTouching(Blocks[i].Item2, Blocks[i - 1].Item2);
+                        //window.label.Content = GoingDown + " " + goingDownDistance;// calculator.GetProcentOfTouching(Blocks[i].Item2, Blocks[i - 1].Item2);
                     }
                     else
                         StraightMoveAnimation(Blocks[i].Item2, Blocks[i].Item1, 0, fallSpeed);

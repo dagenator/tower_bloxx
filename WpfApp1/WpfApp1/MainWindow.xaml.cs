@@ -50,14 +50,7 @@ namespace WpfApp1
             CanvasField.Children.Remove(im);
         }
 
-
-        private void Canvas_KeyUp(object sender, RoutedEventArgs e)
-        {
-
-            //logic.MainButton();
-        }
-
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void CanvasField_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             logic.MainButton();
         }
